@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #Text {
+            font-family: Helvetica, Arial;
+            font-size: 25px;
+            text-align: center;
+            text-anchor: middle;
+            fill: white;
+        }
+
+        #Boarder {
+            stroke-width: 1px;
+            stroke: gray;
+            fill: white;
+            stroke-dasharray: 5px;
+        }
+
+        #Rectangle {
+            fill: grey;
+            fill-opacity: 1;
+        }
+
+        #Center {
+            fill: red;
+        }
+
+        #Screen {
+            fill: #3aa91d;
+            fill-opacity: .75;
+        }
+
+            #Screen:hover {
+                fill: white;
+                fill-opacity: 1;
+            }
+
+        .dashButton:hover {
+            stroke: #3aa91d;
+            stroke-width: 1px;
+            fill-opacity: 1;
+        }
+    </style>
+    <title>Icon</title>
+</head>
+
+<body>
+    <svg width="500" height="500" id="Canvas">
+
+        <rect x="3" y="3" width="497" height="497" id="Boarder" />
+        <g class="dashButton">
+            <rect x="10" y="10" width="480" height="480" rx="50" ry="50" id="Screen" />
+            <rect x="10" y="10" height="750" width="750" rx="15" ry="15" id="Rectangle" />
+
+
+        </g>
+        <text x="50" y="50" id="Text">"Hey Listen!"</text>
+        <g id="Center">
+            <circle cx="10" cy="10" r="2" />
+            <line x1="10" y1="7" x2="10" y2="2" stroke="red" id="Line1" />
+            <line x1="13" y1="10" x2="18" y2="10" stroke="red" id="Line2" />
+            <line x1="10" y1="13" x2="10" y2="18" stroke="red" id="Line3" />
+            <line x1="7" y1="10" x2="2" y2="10" stroke="red" id="Line4" />
+        </g>
+    </svg>
+
+    <script>
+
+        //Master Variable
+        var boarderRect = 40;
+
+
+        //Import SVG Object by ID
+        var svgCanvas = document.getElementById("Canvas");
+        var svgRec = document.getElementById("Rectangle");
+        var svgText = document.getElementById("Text");
+        var svgCp = document.getElementById("Center");
+        var svgScr = document.getElementById("Screen");
+        var svgBg = document.getElementById("Boarder");
+        var svgLnList = [document.getElementById("Line1"), document.getElementById("Line2"), document.getElementById("Line3"), document.getElementById("Line4")];
+
+        //Pull General Size of Text
+        console.log((svgText.clientWidth + 1) + "px");
+        var textWidth = svgText.getComputedTextLength();
+        var textHeight = parseInt(window.getComputedStyle(svgText, null).getPropertyValue("font-size"));
+        console.log("Font-size: " + textHeight);
+
+        //Update Rectangle Width and Height
+        svgRec.setAttribute("width", textWidth + boarderRect);
+        svgRec.setAttribute("height", textWidth + boarderRect);
+
+        //Center Point of Canvas
+        svgCp.setAttribute("cx", svgCanvas.getAttribute("width") / 2);
+        svgCp.setAttribute("cy", svgCanvas.getAttribute("height") / 2);
+
+        //Adjust Rectangle to center of Canvas
+        svgRec.setAttribute("x", (svgCanvas.getAttribute("width") / 2) - (svgRec.getAttribute("width") / 2));
+        svgRec.setAttribute("y", (svgCanvas.getAttribute("height") / 2) - (svgRec.getAttribute("height") / 2));
+
+        //Center Text for Mid Center Alignment
+        svgText.setAttribute("x", svgCanvas.getAttribute("height") / 2);
+        svgText.setAttribute("y", ((svgCanvas.getAttribute("width") / 2) + (textHeight / 2) - 6));
+
+        var textX = svgText.getAttribute("x");
+        var textY = svgText.getAttribute("y");
+        console.log("The New text is Located: " + textX + " X, " + textY + " Y");
+
+        console.log((svgText.clientWidth + 1) + "px");
+
+        //Event Listener Change Color
+
+        svgScr.addEventListener("mouseover", mouseOver);
+        svgScr.addEventListener("mouseout", mouseOut);
+
+        function mouseOver() {
+            svgBg.style.fill = "#3aa91d";
+            svgBg.style.fillOpacity = ".75";
+            svgCp.style.fill = "white";
+            for (i = 0; i < svgLnList.length; i++) {
+                svgLnList[i].style.stroke = "white";
+            }
+        }
+        function mouseOut() {
+            svgBg.style.fill = "white";
+            svgCp.style.fill = "red";
+            for (i = 0; i < svgLnList.length; i++) {
+                svgLnList[i].style.stroke = "red";
+            }
+        }
+
+    </script>
+</body>
+</html>
